@@ -28,7 +28,7 @@ A Flask-based web application that analyzes startup pitch decks using Claude AI,
 
 ## Web deployment
 
-The application is available at `fill later`
+The application is available at `https://cv-exercise.onrender.com/`
 
 ## Project Structure
 
