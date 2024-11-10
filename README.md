@@ -47,9 +47,16 @@ pitch-deck-analyzer/
 
 ### Scoring System
 
-Overall score is calculated using weighted components:
-- Team evaluation (40%)
-- Business model (35%)
-- Traction metrics (25%)
+The overall score is calculated using weighted components:
+- **Team Evaluation (40%)**: Assesses team experience, previous collaborations, and sector relevance.
+- **Business Model (35%)**: Evaluates scalability, upsell potential, and risk resilience.
+- **Traction Metrics (25%)**: Analyzes customer acquisition, growth metrics, and retention.
 
-Each component is scored on multiple sub-criteria using a {0, 0.5, 1} scale.
+Each component uses a scoring scale of {0, 0.5, 1} for each criterion, producing a weighted final score on a 0-100 scale.
+
+### Criteria for Suitability
+
+A pitch deck is considered suitable for follow-up calls if:
+- It scores above 50.
+- Meets criteria for industry, stage, and geography fit.
+- Demonstrates climate-tech relevance.
