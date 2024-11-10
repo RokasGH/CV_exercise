@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Results - {{ deck.company_name }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+<div class="container mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold">Analysis Results: {{ deck.company_name }}</h1>
+        <div class="space-x-4">
+            <a href="{{ url_for('home') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                Upload New Deck
+            </a>
+            <a href="{{ url_for('analytics') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                View All Decks
+            </a>
+        </div>
+    </div>
+        <!-- Summary Section -->
+        <div class="bg-white shadow-md rounded px-8 py-6 mb-6">
+            <h2 class="text-xl font-bold mb-4">Executive Summary</h2>
+            <p class="text-gray-700">{{ deck.summary }}</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Company Overview -->
+            <div class="bg-white shadow-md rounded px-8 py-6">
+                <h2 class="text-xl font-bold mb-4">Company Overview</h2>
+                <dl class="grid grid-cols-2 gap-4">
+                    <dt class="font-semibold">Industry:</dt>
+                    <dd class="flex items-center">
+                        {{ deck.industry }}
+                        {% if deck.is_industry_in_scope %}
+                        <span class="ml-2 px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">In Scope</span>
+                        {% else %}
+                        <span class="ml-2 px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Out of Scope</span>
+                        {% endif %}
+                    </dd>
+
+                    <dt class="font-semibold">Stage:</dt>
+                    <dd class="flex items-center">
+                        {{ deck.stage }}
+                        {% if deck.is_stage_in_scope %}
+                        <span class="ml-2 px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">In Scope</span>
+                        {% else %}
+                        <span class="ml-2 px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Out of Scope</span>
+                        {% endif %}
+                    </dd>
+
+                    <dt class="font-semibold">Geography:</dt>
+                    <dd class="flex items-center">
+                        {{ deck.geography }}
+                        {% if deck.is_geography_in_scope %}
+                        <span class="ml-2 px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">In Scope</span>
+                        {% else %}
+                        <span class="ml-2 px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Out of Scope</span>
+                        {% endif %}
+                    </dd>
+
+                    <dt class="font-semibold">Overall Score:</dt>
+                    <dd class="font-bold text-lg">{{ deck.overall_score }}/100</dd>
+
+                    <dt class="font-semibold">Suitable for Call:</dt>
+                    <dd>
+                        {% if deck.suitable_for_call %}
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Yes</span>
+                        {% else %}
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">No</span>
+                        {% endif %}
+                    </dd>
+
+                    {% if deck.website %}
+                    <dt class="font-semibold">Website:</dt>
+                    <dd><a href="{{ deck.website }}" class="text-blue-500 hover:text-blue-700" target="_blank">{{ deck.website }}</a></dd>
+                    {% endif %}
+                </dl>
+            </div>
+
+            <!-- Climate Tech Analysis -->
+            <div class="bg-white shadow-md rounded px-8 py-6">
+                <h2 class="text-xl font-bold mb-4">Climate Tech Analysis</h2>
+                <div class="space-y-4">
+                    {% set climate = deck.climate_tech_analysis %}
+                    <p><span class="font-semibold">Is Climate Tech:</span>
+                        {% if climate.is_climate_tech %}
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Yes</span>
+                        {% else %}
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">No</span>
+                        {% endif %}
+                    </p>
+                    <p><span class="font-semibold">Impact Potential:</span> {{ climate.impact_potential }}</p>
+                    <p><span class="font-semibold">Tech Readiness:</span> {{ climate.tech_readiness }}</p>
+                    <p><span class="font-semibold">Regulatory Alignment:</span> {{ climate.regulatory_alignment }}</p>
+                </div>
+            </div>
+
+            <!-- Team Evaluation -->
+            <div class="bg-white shadow-md rounded px-8 py-6">
+                <h2 class="text-xl font-bold mb-4">Team Evaluation</h2>
+                <div class="space-y-4">
+                    {% set team = deck.team_score %}
+                    <p><span class="font-semibold">Relevant Experience:</span> {{ team.relevant_experience }}/1.0</p>
+                    <p><span class="font-semibold">Worked Together:</span> {{ team.worked_together }}/1.0</p>
+                    <p><span class="font-semibold">Previous Business:</span> {{ team.previous_business }}/1.0</p>
+                    <p class="text-sm text-gray-600">{{ team.comments }}</p>
+                </div>
+            </div>
+
+            <!-- Business Model Evaluation -->
+            <div class="bg-white shadow-md rounded px-8 py-6">
+                <h2 class="text-xl font-bold mb-4">Business Model Evaluation</h2>
+                <div class="space-y-4">
+                    {% set bm = deck.business_model_score %}
+                    <p><span class="font-semibold">Scalability:</span> {{ bm.scalability }}/1.0</p>
+                    <p><span class="font-semibold">Upsell Potential:</span> {{ bm.upsell_potential }}/1.0</p>
+                    <p><span class="font-semibold">Risk Resistance:</span> {{ bm.risk_resistance }}/1.0</p>
+                    <p class="text-sm text-gray-600">{{ bm.comments }}</p>
+                </div>
+            </div>
+
+            <!-- Traction Evaluation -->
+            <div class="bg-white shadow-md rounded px-8 py-6">
+                <h2 class="text-xl font-bold mb-4">Traction Evaluation</h2>
+                <div class="space-y-4">
+                    {% set traction = deck.traction_score %}
+                    <p><span class="font-semibold">Initial Customers:</span> {{ traction.initial_customers }}/1.0</p>
+                    <p><span class="font-semibold">Rapid Growth:</span> {{ traction.rapid_growth }}/1.0</p>
+                    <p><span class="font-semibold">Customer Retention:</span> {{ traction.customer_retention }}/1.0</p>
+                    <p class="text-sm text-gray-600">{{ traction.comments }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
